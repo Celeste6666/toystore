@@ -1,0 +1,8 @@
+//Webpack and bundlers(https://getbootstrap.com/docs/5.1/getting-started/webpack/)
+//載入其他字體
+@import url(https://fonts.googleapis.com/earlyaccess/cwtexyen.css);
+@import url(https://fonts.googleapis.com/css2?family=Varela+Round&display=swap);
+// 先建立自定義的樣式
+// 這將會覆蓋掉bootstrap中的變數
+@import "custom";
+@import "~bootstrap/scss/bootstrap";
