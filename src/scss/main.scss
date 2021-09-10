@@ -1,0 +1,28 @@
+//Webpack and bundlers(https://getbootstrap.com/docs/5.1/getting-started/webpack/)
+//載入其他字體
+@import url(https://fonts.googleapis.com/earlyaccess/cwtexyen.css);
+@import url(https://fonts.googleapis.com/css2?family=Varela+Round&display=swap);
+
+// Required
+@import "~/node_modules/bootstrap/scss/functions";
+// 先建立自定義的樣式
+// 這將會覆蓋掉bootstrap中的變數
+@import "custom";
+@import "~/node_modules/bootstrap/scss/variables";
+
+// Create your own map
+$white-colors: (
+  "white": #fff
+);
+
+// Merge the maps
+$theme-colors: map-merge($theme-colors, $white-colors);
+
+// space
+$new-spacer: (
+  6: $spacer * 6,
+);
+
+$spacers: map-merge($spacers, $new-spacer);
+
+@import "~bootstrap/scss/bootstrap";
