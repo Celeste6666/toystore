@@ -1,40 +1,39 @@
 //欲改變的變數值
 
-//顏色
-$success: #a5c926;
-$info: #4ba6f5;
-$warning: #f79400;
-$danger: #f34235;
-
-
-//文字
-$font-family-sans-serif: 'cwTeXYen',
-'Varela Round',
-system-ui,
--apple-system,
-"Segoe UI",
-Roboto,
-"Helvetica Neue",
-Arial,
-"Noto Sans",
-"Liberation Sans",
-sans-serif,
-"Apple Color Emoji",
-"Segoe UI Emoji",
-"Segoe UI Symbol",
-"Noto Color Emoji";
-
-$font-size-base: 1.1rem; // Assumes the browser default, typically `16px`
-$font-size-sm: $font-size-base * .875;
-$font-size-lg: $font-size-base * 1.25;
-
 //表單
 $input-border-radius: 0;
-$input-border-color: transparent;
-$input-btn-border-width: 0;
-$input-box-shadow: none;
+$btn-border-width: 0;
+$btn-focus-box-shadow: none;
+$input-btn-focus-box-shadow: none;
 $input-focus-bg: transparent;
-$input-btn-focus-width: 0;
+$btn-focus-width: 0;
+$form-select-focus-width: 0;
 
 //border
+$border-radius: 15px;
 $card-border-radius: 15px;
+
+//pagination
+$pagination-color: var(--bs-gray-600);
+$pagination-bg: transparent;
+$pagination-border-width: 0;
+$pagination-border-radius: 0;
+
+$pagination-focus-color: $success;
+$pagination-focus-bg: transparent;
+$pagination-focus-box-shadow: none;
+$pagination-focus-outline: 0;
+
+$pagination-hover-color: $success;
+$pagination-hover-bg: transparent;
+$pagination-hover-border-color: transparent;
+
+$pagination-active-color: $success;
+$pagination-active-bg: transparent;
+$pagination-active-border-color: transparent;
+
+$pagination-disabled-color: var(--bs-gray-600);
+$pagination-disabled-bg: transparent;
+$pagination-disabled-border-color: transparent;
+
+$pagination-transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;

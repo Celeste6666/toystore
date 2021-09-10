@@ -6,28 +6,39 @@
           <div class="card-title text-center h3">會員登入</div>
           <div class="form-floating mb-3">
             <!--eslint-disable-next-line-->
-            <input type="email"
-            class="form-control border-bottom login_area-email"
-            placeholder="請輸入帳號"
-            v-model="loginUser.email">
+            <input
+              type="email"
+              class="form-control border-bottom login_area-email"
+              placeholder="請輸入帳號"
+              v-model="loginUser.email"
+            />
             <label>電子信箱</label>
           </div>
           <div class="form-floating mb-3">
             <!--eslint-disable-next-line-->
-            <input type="password"
-            class="form-control  border-bottom login_area-password"
-            placeholder="請輸入密碼"
-            v-model="loginUser.password">
+            <input
+              type="password"
+              class="form-control border-bottom login_area-password"
+              placeholder="請輸入密碼"
+              v-model="loginUser.password"
+            />
             <label>密碼</label>
           </div>
           <div class="d-grid gap-2 mt-5">
-            <button class="btn btn-danger rounded-pill text-white"
-            @click.prevent="getLoginUserData">登入</button>
-            <small class="text-success">
+            <button
+              class="btn btn-danger rounded-pill"
+              @click.prevent="getLoginUserToken"
+            >
+              登入
+            </button>
+            <small class="text-success text-center">
               尚未擁有帳戶？
-              <a href="#"
-              class="text-danger text-decoration-none"
-              @click.prevent="changeLoginTab">註冊</a>
+              <a
+                href="#"
+                class="text-danger text-decoration-none"
+                @click.prevent="changeLoginTab"
+                >註冊</a
+              >
             </small>
           </div>
         </div>
@@ -41,44 +52,71 @@
   </div>
 </template>
 <script>
+import { reactive } from 'vue';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+
 export default {
   name: 'login',
-  data() {
+  setup() {
+    const store = useStore();
+    const router = useRouter();
+
+    const loginUser = reactive({
+      email: 'aafree2014@gmail.com',
+      password: 'aafree2014',
+    });
+
+    async function getLoginUserToken() {
+      const adminToken = await store.dispatch('login', loginUser);
+      if (!adminToken.success) {
+        router.push('/');
+        return;
+      }
+      const cookieReg = /(?:(?:^|.*;\s*)toyStoreToken\s*=\s*([^;]*).*$)|^.*$/;
+      const { token } = adminToken;
+      const expired = new Date(Date.now() + 9000000);
+      if (document.cookie.replace(cookieReg, '$1') !== 'true') {
+        document.cookie = `toyStoreToken=${token}; expires=${expired}; path=/`;
+      }
+      router.push('/admin');
+    }
+
     return {
-      loginUser: {
-        email: 'aafree2014@gmail.com',
-        password: 'aafree2014',
-      },
+      loginUser,
+      getLoginUserToken,
     };
   },
   methods: {
     changeLoginTab() {
       this.$store.commit('changeLoginTab');
     },
-    getLoginUserData() {
-      this.$axios.post(`${this.$store.state.baseAPI}/auth/login`, this.loginUser)
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
-    },
   },
 };
 </script>
 <style lang="scss" scoped>
-@import "@/scss/main.scss";
-.login_area{
+@import '@/scss/main.scss';
+.login_area {
   border-radius: 20px;
-  &-email,&-password{
+  &-email,
+  &-password {
     border-bottom-width: 2px !important;
     border-bottom-color: lighten($success, 25%) !important;
-    &+label{
+    & + label {
       top: 15px;
     }
   }
-  &-email:focus,&-password:focus,&-email:not(:placeholder-shown),&-password:not(:placeholder-shown){
-    border-bottom-color:$success !important;
-    &+label{
+  &-email:focus,
+  &-password:focus,
+  &-email:not(:placeholder-shown),
+  &-password:not(:placeholder-shown) {
+    border-bottom-color: $success !important;
+    & + label {
       top: -5px;
     }
   }
+}
+.form-control {
+  border: 0;
 }
 </style>
