@@ -12,6 +12,7 @@
     "axios": "^0.21.1",
     "bootstrap": "^5.1.0",
     "bootstrap-icons": "^1.5.0",
+    "chart.js": "^3.5.1",
     "core-js": "^3.6.5",
     "vue": "^3.0.0",
     "vue-axios": "^3.2.5",
@@ -25,7 +26,7 @@
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "@vue/compiler-sfc": "^3.0.0",
-    "@vue/eslint-config-airbnb": "^5.0.2",
+    "@vue/eslint-config-airbnb": "^5.3.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-import": "^2.20.2",
@@ -39,13 +40,21 @@
       "node": true
     },
     "extends": [
-      "plugin:vue/vue3-essential",
+      "plugin:vue/base",
       "@vue/airbnb"
     ],
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {
+      "max-len": [
+        "warn",
+        {
+          "code": 200,
+          "ignoreUrls": true
+        }
+      ]
+    }
   },
   "browserslist": [
     "> 1%",
