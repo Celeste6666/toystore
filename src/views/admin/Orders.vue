@@ -5,11 +5,7 @@
       <li class="card border-0 shadow-sm my-2">
         <div class="card-body d-flex align-items-center justify-content-around">
           <span class="order-buyer text-center">
-            <img
-              src="https://randomuser.me/api/portraits/women/12.jpg"
-              alt=""
-              class="order-buyer-img border border-3 rounded-circle"
-            />
+            <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="" class="order-buyer-img border border-3 rounded-circle" />
             <div class="small mt-1">Celeste KUO</div>
           </span>
           <span class="text-center order-price">
@@ -42,19 +38,21 @@
       </li>
     </ul>
   </section>
+  <Pagination current-page-function="getAdminCurrentOrders" />
   <OrdersModal />
 </template>
 <script>
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 import OrdersModal from '@/components/admin/OrdersModal.vue';
+import Pagination from '@/components/general/Pagination.vue';
 
 export default {
   name: 'Orders',
-  components: { OrdersModal },
+  components: { OrdersModal, Pagination },
   setup() {
     const store = useStore();
-    const adminOrders = computed(() => store.state.admin.ordersList);
+    const adminOrders = computed(() => store.state.currentPageData);
     return {
       adminOrders,
     };

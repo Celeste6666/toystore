@@ -26,36 +26,33 @@ export default {
     const adminProducts = await res.json();
     commit('getAdminProducts', adminProducts.data);
   },
+  // 取得指定頁面產品
+  async getAdminCurrentProducts({ getters, commit }, page = 1) {
+    const res = await fetch(`${getters.admin}/products?page=${page}&paged=10`, {
+      method: 'GET',
+      headers: getters.requestHeaders,
+    });
+    const CurrentProducts = await res.json();
+    commit('getCurrentPage', CurrentProducts);
+  },
   // 刪除產品
-  async deleteAdminProduct({ getters, commit }, id) {
+  async deleteAdminProduct({ getters, dispatch }, id) {
     fetch(`${getters.admin}/product/${id}`, {
       method: 'DELETE',
       headers: getters.requestHeaders,
     }).then(() => {
-      commit('deleteAdminProduct', id);
+      dispatch('getAdminCurrentProducts');
     });
-  },
-  // 新增圖片
-  async addImage({ state }, formData) {
-    const res = await fetch(`${state.api.baseAPI}/${state.api.uuid}/admin/storage`, {
-      method: 'POST',
-      headers: new Headers({
-        Authorization: `Bearer ${state.api.token}`,
-      }),
-      body: formData,
-    });
-
-    return res.json();
   },
   // 新增產品
-  async addAdminProduct({ getters, commit }, product) {
-    const res = await fetch(`${getters.admin}/product`, {
+  async addAdminProduct({ getters, dispatch }, product) {
+    fetch(`${getters.admin}/product`, {
       method: 'POST',
       headers: getters.requestHeaders,
       body: JSON.stringify(product),
+    }).then(() => {
+      dispatch('getAdminCurrentProducts');
     });
-    const newProduct = await res.json();
-    commit('addAdminProduct', newProduct);
   },
   // 取得單一產品
   async getAdminSingleProduct({ getters }, id) {
@@ -72,8 +69,10 @@ export default {
       headers: getters.requestHeaders,
       body: JSON.stringify(product),
     });
-    const editedProduct = await res.json();
-    commit('editProduct', editedProduct.data);
+    if (res.status === 200) {
+      const editedProduct = await res.json();
+      commit('editProduct', editedProduct.data);
+    }
   },
   // 取得所有 orders
   async getAdminOrders({ getters, commit }) {
@@ -84,6 +83,15 @@ export default {
     const adminOrders = await res.json();
     commit('getAdminoOders', adminOrders.data);
   },
+  // 取得指定頁面訂單
+  async getAdminCurrentOrders({ getters, commit }, page = 1) {
+    const res = await fetch(`${getters.admin}/orders?page=${page}&paged=10`, {
+      method: 'GET',
+      headers: getters.requestHeaders,
+    });
+    const CurrentOrders = await res.json();
+    commit('getCurrentPage', CurrentOrders);
+  },
   // 取得所有 coupons
   async getAdminCoupons({ getters, commit }) {
     const res = await fetch(`${getters.admin}/coupons`, {
@@ -93,24 +101,33 @@ export default {
     const adminCoupons = await res.json();
     commit('getAdminCoupons', adminCoupons.data);
   },
+  // 取得指定頁面優惠券
+  async getAdminCurrentCoupons({ getters, commit }, page = 1) {
+    const res = await fetch(`${getters.admin}/coupons?page=${page}&paged=10`, {
+      method: 'GET',
+      headers: getters.requestHeaders,
+    });
+    const CurrentCoupons = await res.json();
+    commit('getCurrentPage', CurrentCoupons);
+  },
   // 刪除指定 id 的優惠券
-  async deleteAdminCoupon({ getters, commit }, id) {
+  async deleteAdminCoupon({ getters, dispatch }, id) {
     fetch(`${getters.admin}/coupon/${id}`, {
       method: 'DELETE',
       headers: getters.requestHeaders,
     }).then(() => {
-      commit('deleteAdminCoupon', id);
+      dispatch('getAdminCurrentCoupons');
     });
   },
   // 新增 Coupon
-  async addAdminCoupon({ getters, commit }, coupon) {
-    const res = await fetch(`${getters.admin}/coupon`, {
+  async addAdminCoupon({ getters, dispatch }, coupon) {
+    fetch(`${getters.admin}/coupon`, {
       method: 'POST',
       headers: getters.requestHeaders,
       body: JSON.stringify(coupon),
+    }).then(() => {
+      dispatch('getAdminCurrentCoupons');
     });
-    const newCoupon = await res.json();
-    commit('addAdminCoupon', newCoupon.data);
   },
   // 更新指定id Coupon
   async editAdminCoupon({ getters, commit }, coupon) {
@@ -119,8 +136,10 @@ export default {
       headers: getters.requestHeaders,
       body: JSON.stringify(coupon),
     });
-    const editCoupon = await res.json();
-    commit('editAdminCoupon', editCoupon.data);
+    if (res.status === 200) {
+      const editCoupon = await res.json();
+      commit('editAdminCoupon', editCoupon.data);
+    }
   },
   // 取得所有照片
   async getAdminImages({ state, getters, commit }) {
@@ -131,13 +150,34 @@ export default {
     const images = await res.json();
     commit('getAdminPhotos', images.data);
   },
+  // 新增圖片
+  async addImage({ state, dispatch }, formData) {
+    fetch(`${state.api.baseAPI}/${state.api.uuid}/admin/storage`, {
+      method: 'POST',
+      headers: new Headers({
+        Authorization: `Bearer ${state.api.token}`,
+      }),
+      body: formData,
+    }).then(() => {
+      dispatch('getAdminCurrentImages');
+    });
+  },
   // 刪除圖片
-  async deleteAdminImage({ state, getters, commit }, id) {
+  async deleteAdminImage({ state, getters, dispatch }, id) {
     fetch(`${state.api.baseAPI}/${state.api.uuid}/admin/storage/${id}`, {
       method: 'DELETE',
       headers: getters.requestHeaders,
     }).then(() => {
-      commit('deleteAdminPhoto', id);
+      dispatch('getAdminCurrentImages');
     });
+  },
+  // 取得指定頁面圖片
+  async getAdminCurrentImages({ state, getters, commit }, page = 1) {
+    const res = await fetch(`${state.api.baseAPI}/${state.api.uuid}/admin/storage?page=${page}&paged=10`, {
+      method: 'GET',
+      headers: getters.requestHeaders,
+    });
+    const CurrentImages = await res.json();
+    commit('getCurrentPage', CurrentImages);
   },
 };

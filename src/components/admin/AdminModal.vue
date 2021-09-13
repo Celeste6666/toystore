@@ -103,9 +103,7 @@ export default {
       if (router.currentRoute.value.name === 'Photos') {
         const formData = new FormData();
         formData.append('file', document.querySelector('input[type="file"]').files[0]);
-        const imgResponse = await store.dispatch('addImage', formData);
-        store.commit('addNewPhoto', imgResponse.data);
-        document.querySelector('input[type="file"]').files[0] = '';
+        await store.dispatch('addImage', formData);
       } else if (router.currentRoute.value.name === 'Coupons') {
         if (!currentEditCoupon.id) {
           // 新增
@@ -113,9 +111,9 @@ export default {
           for (let i = 1; i <= 8; i += 1) {
             currentEditCoupon.code += randomCode[Math.floor(Math.random() * randomCode.length)];
           }
-          store.dispatch('addAdminCoupon', currentEditCoupon);
+          await store.dispatch('addAdminCoupon', currentEditCoupon);
         } else {
-          store.dispatch('editAdminCoupon', currentEditCoupon);
+          await store.dispatch('editAdminCoupon', currentEditCoupon);
         }
       }
     }

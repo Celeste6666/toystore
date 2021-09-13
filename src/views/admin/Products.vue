@@ -50,13 +50,13 @@
     </section>
     <ProductsModal :productId="productId" />
   </div>
-  <Pagination />
+  <Pagination current-page-function="getAdminCurrentProducts" />
 </template>
 
 <script>
 import { useStore } from 'vuex';
 // eslint-disable-next-line
-import { ref, computed, watchEffect } from 'vue';
+import { ref, computed } from 'vue';
 import ProductsModal from '@/components/admin/ProductsModal.vue';
 import Pagination from '@/components/general/Pagination.vue';
 
@@ -70,7 +70,7 @@ export default {
     const store = useStore();
     const productId = ref('add');
 
-    const adminProducts = computed(() => store.state.admin.productsList);
+    const adminProducts = computed(() => store.state.currentPageData);
 
     function setProductId(e) {
       productId.value = e.target.dataset.id;
@@ -86,6 +86,7 @@ export default {
     // 刪除產品
     delete(e) {
       this.$store.dispatch('deleteAdminProduct', e.target.dataset.id);
+      this.$store.dispatch('getAdminCurrentProducts');
     },
   },
 };

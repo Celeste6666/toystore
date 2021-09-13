@@ -165,8 +165,10 @@ export default {
         formData.append('file', document.querySelector('.file-upload').files[0]);
         const imgResponse = await store.dispatch('addImage', formData);
         currentEditProduct.imageUrl[0] = imgResponse.data.path;
-        await store.dispatch('addAdminProduct', currentEditProduct);
+        store.dispatch('addAdminProduct', currentEditProduct);
+        store.dispatch('getAdminCurrentProducts');
       }
+      deleteCurrentEditProduct();
     }
 
     return {
@@ -177,11 +179,13 @@ export default {
   methods: {
     // 選取圖片後預覽圖片
     getImage(e) {
-      const img = document.querySelector('.new-product-img');
-      img.src = URL.createObjectURL(e.target.files[0]);
-      img.onload = function () {
-        URL.revokeObjectURL(this.src);
-      };
+      if (e.target.files[0]) {
+        const img = document.querySelector('.new-product-img');
+        img.src = URL.createObjectURL(e.target.files[0]);
+        img.onload = function () {
+          URL.revokeObjectURL(this.src);
+        };
+      }
     },
   },
 };

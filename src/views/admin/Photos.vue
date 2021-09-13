@@ -6,6 +6,7 @@
   <section>
     <AdminList :photos="adminImages" />
   </section>
+  <Pagination current-page-function="getAdminCurrentImages" />
   <AdminModal />
 </template>
 <script>
@@ -13,13 +14,14 @@ import { useStore } from 'vuex';
 import { computed } from 'vue';
 import AdminList from '@/components/admin/AdminList.vue';
 import AdminModal from '@/components/admin/AdminModal.vue';
+import Pagination from '@/components/general/Pagination.vue';
 
 export default {
   name: 'Coupons',
-  components: { AdminList, AdminModal },
+  components: { AdminList, AdminModal, Pagination },
   setup() {
     const store = useStore();
-    const adminImages = computed(() => store.state.admin.photosList);
+    const adminImages = computed(() => store.state.currentPageData);
 
     return {
       adminImages,

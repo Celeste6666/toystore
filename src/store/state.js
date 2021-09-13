@@ -5,6 +5,7 @@ export default {
     token: '',
   },
   currentLoginTab: 'LoginArea',
+  allCategory: ['絨毛玩具', '木製玩具', '樂高玩具'],
   client: {
     productsList: {},
     ordersList: {},
@@ -15,4 +16,6 @@ export default {
     couponsList: [],
     photosList: [],
   },
+  currentPageData: [],
+  currentPagination: {},
 };

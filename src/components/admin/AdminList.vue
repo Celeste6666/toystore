@@ -50,7 +50,7 @@
             </td>
             <td scope="col">
               <button class="btn fs-4" :data-id="img.id" @click.prevent="delete">
-                <i class="bi bi-trash" :data-id="img.id" @click.prevent="delete"></i>
+                <i class="bi bi-trash" :data-id="img.id" @click.stop="delete"></i>
               </button>
             </td>
           </tr>
@@ -80,12 +80,12 @@ export default {
       const editDate = { id: e.target.dataset.id, enabled: document.querySelector('.coupon-enabled').checked };
       this.$store.dispatch('editAdminCoupon', editDate);
     },
-    delete(e) {
+    async delete(e) {
       if (this.$route.name === 'Photos') {
-        this.$store.dispatch('deleteAdminImage', e.target.dataset.id);
+        await this.$store.dispatch('deleteAdminImage', e.target.dataset.id);
       }
       if (this.$route.name === 'Coupons') {
-        this.$store.dispatch('deleteAdminCoupon', e.target.dataset.id);
+        await this.$store.dispatch('deleteAdminCoupon', e.target.dataset.id);
       }
     },
   },

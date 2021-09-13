@@ -21,7 +21,7 @@ module.exports = {
     }],
     'max-len': ['warn', { code: 200, ignoreUrls: true }],
     "operator-linebreak": ["error", "after"],
-    "object-curly-newline": ["error", {
+    "object-curly-newline": ["warn", {
       "ObjectExpression": "always",
       "ObjectPattern": {
         "multiline": true

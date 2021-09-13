@@ -6,6 +6,7 @@
   <section>
     <AdminList :coupons="adminCoupons" />
   </section>
+  <Pagination current-page-function="getAdminCurrentCoupons" />
   <AdminModal />
 </template>
 <script>
@@ -13,13 +14,14 @@ import { computed } from 'vue';
 import { useStore } from 'vuex';
 import AdminList from '@/components/admin/AdminList.vue';
 import AdminModal from '@/components/admin/AdminModal.vue';
+import Pagination from '@/components/general/Pagination.vue';
 
 export default {
   name: 'Coupons',
-  components: { AdminList, AdminModal },
+  components: { AdminList, AdminModal, Pagination },
   setup() {
     const store = useStore();
-    const adminCoupons = computed(() => store.state.admin.couponsList);
+    const adminCoupons = computed(() => store.state.currentPageData);
     return {
       adminCoupons,
     };
