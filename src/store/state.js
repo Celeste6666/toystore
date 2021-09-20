@@ -7,8 +7,21 @@ export default {
   currentLoginTab: 'LoginArea',
   allCategory: ['絨毛玩具', '木製玩具', '樂高玩具'],
   client: {
-    productsList: {},
-    ordersList: {},
+    product: {},
+    productsList: {
+      絨毛玩具: [],
+      木製玩具: [],
+      樂高玩具: [],
+    },
+    order: {
+      name: 'Celeste',
+      email: 'aafree2014@gmail.com',
+      tel: '',
+      address: '',
+      payment: 'COD',
+      coupon: '',
+      message: '',
+    },
   },
   admin: {
     productsList: [],

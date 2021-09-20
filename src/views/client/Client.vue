@@ -1,8 +1,6 @@
 <template>
   <div id="client-app">
-    <div
-      class="navbar navbar-expand-lg navbar-light bg-white d-flex flex-column py-0 fixed-top"
-    >
+    <div class="navbar navbar-expand-lg navbar-light bg-white d-flex flex-column py-0 fixed-top">
       <div class="container-fluid bg-danger">
         <div class="container-md d-flex justify-content-between align-items-center">
           <div class="me-auto text-white small">
@@ -25,9 +23,9 @@
             </div>
             <div class="col-8 col-md-10 d-flex flex-row-reverse">
               <div class="w-md-50 text-end">
-                <button class="btn btn-lg">
+                <router-link to="/checkout" class="btn btn-lg">
                   <i class="bi bi-cart3 fs-4"></i>
-                </button>
+                </router-link>
                 <router-link to="/login" class="btn btn-lg">
                   <i class="bi bi-person-fill fs-4"></i>
                 </router-link>
@@ -67,7 +65,7 @@
         </div>
       </div>
     </div>
-    <router-view />
+    <router-view class="pt-6" />
     <article class="container-lg">
       <Coupon />
       <FollowUs />

@@ -4,7 +4,9 @@ import Home from '@/views/client/Home.vue';
 import Catalog from '@/views/client/Catalog.vue';
 import Delivery from '@/views/client/Delivery.vue';
 import Contact from '@/views/client/ContactUs.vue';
+import Product from '@/views/client/Product.vue';
 import Login from '@/views/client/Login.vue';
+import Checkout from '@/views/client/Checkout.vue';
 // 後台
 import Admin from '@/views/admin/Admin.vue';
 import Statistic from '@/views/admin/Statistic.vue';
@@ -46,6 +48,16 @@ const routes = [
         path: 'contact',
         name: 'Contact',
         component: Contact,
+      },
+      {
+        path: 'product/:id',
+        name: 'Product',
+        component: Product,
+      },
+      {
+        path: 'checkout',
+        name: 'Checkout',
+        component: Checkout,
       },
       {
         path: 'login',

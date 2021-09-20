@@ -1,8 +1,14 @@
 export default {
   // client
-  // 從資料庫取得資料
-  getClientProducts(state, payload) {
-    state.client.productsList = payload;
+  // 取得所有產品後分類
+  getProductsList(state, products) {
+    state.allCategory.forEach((cate) => {
+      state.client.productsList[cate] = products.filter((product) => product.category === cate);
+    });
+  },
+  // 取得產品資料
+  getProduct(state, productInfo) {
+    state.client.product = productInfo;
   },
   // 改變註冊或登入頁面
   changeLoginTab(state) {

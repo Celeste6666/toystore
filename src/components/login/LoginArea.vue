@@ -6,39 +6,19 @@
           <div class="card-title text-center h3">會員登入</div>
           <div class="form-floating mb-3">
             <!--eslint-disable-next-line-->
-            <input
-              type="email"
-              class="form-control border-bottom login_area-email"
-              placeholder="請輸入帳號"
-              v-model="loginUser.email"
-            />
+            <input type="email" class="form-control border-bottom login_area-email" placeholder="請輸入帳號" v-model="loginUser.email" />
             <label>電子信箱</label>
           </div>
           <div class="form-floating mb-3">
             <!--eslint-disable-next-line-->
-            <input
-              type="password"
-              class="form-control border-bottom login_area-password"
-              placeholder="請輸入密碼"
-              v-model="loginUser.password"
-            />
+            <input type="password" class="form-control border-bottom login_area-password" placeholder="請輸入密碼" v-model="loginUser.password" />
             <label>密碼</label>
           </div>
           <div class="d-grid gap-2 mt-5">
-            <button
-              class="btn btn-danger rounded-pill"
-              @click.prevent="getLoginUserToken"
-            >
-              登入
-            </button>
+            <button class="btn btn-danger rounded-pill" @click.prevent="getLoginUserToken">登入</button>
             <small class="text-success text-center">
               尚未擁有帳戶？
-              <a
-                href="#"
-                class="text-danger text-decoration-none"
-                @click.prevent="changeLoginTab"
-                >註冊</a
-              >
+              <a href="#" class="text-danger text-decoration-none" @click.prevent="changeLoginTab">註冊</a>
             </small>
           </div>
         </div>
@@ -71,15 +51,12 @@ export default {
       const adminToken = await store.dispatch('login', loginUser);
       if (!adminToken.success) {
         router.push('/');
-        return;
+      } else {
+        store.commit('getToken', adminToken.token);
+        router.push('/admin');
+        const expired = new Date(Date.now() + 9000000);
+        document.cookie = `toyStoreToken=${store.state.api.token}; expires=${expired}; path=/`;
       }
-      const cookieReg = /(?:(?:^|.*;\s*)toyStoreToken\s*=\s*([^;]*).*$)|^.*$/;
-      const { token } = adminToken;
-      const expired = new Date(Date.now() + 9000000);
-      if (document.cookie.replace(cookieReg, '$1') !== 'true') {
-        document.cookie = `toyStoreToken=${token}; expires=${expired}; path=/`;
-      }
-      router.push('/admin');
     }
 
     return {

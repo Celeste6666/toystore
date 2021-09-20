@@ -9,15 +9,18 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.9.3",
+    "@vee-validate/rules": "^4.4.7",
     "axios": "^0.21.1",
     "bootstrap": "^5.1.0",
     "bootstrap-icons": "^1.5.0",
     "chart.js": "^3.5.1",
     "core-js": "^3.6.5",
+    "vee-validate": "^4.4.11",
     "vue": "^3.0.0",
     "vue-axios": "^3.2.5",
     "vue-router": "^4.0.0-0",
-    "vuex": "^4.0.0-0"
+    "vuex": "^4.0.0-0",
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

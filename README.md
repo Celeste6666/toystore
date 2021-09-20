@@ -33,6 +33,7 @@ APP.vue('/') -|                   |-404.vue('404')
                                                 |-ContactUS.vue
                                                 |-Delivery.vue
                          |-Router-view  ------- |-Login.vue
+                         |                      |-Checkout.vue
                          |
 views/client/Client.vue- |-components/general/About.vue
                          |-components/general/Coupon.vue

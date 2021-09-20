@@ -1,7 +1,7 @@
 <template>
   <section class="admin container-fluid">
     <div class="row">
-      <aside class="col-md-3 col-lg-2 shadow position-relative">
+      <aside class="col-md-3 col-lg-2 shadow position-sticky top-0 start-0">
         <nav class="navbar">
           <div class="container-fluid px-2 flex-column align-items-start">
             <h2 class="my-4 px-3">玩具城</h2>
@@ -41,9 +41,6 @@
             </div>
           </div>
         </nav>
-        <button class="btn fs-3 position-absolute bottom-0 end-0" @click.prevent="signOut">
-          <i class="bi bi-box-arrow-right"></i>
-        </button>
       </aside>
       <article class="col-md-9 col-lg-10 admin-app">
         <div class="container-fluid px-2">
@@ -51,11 +48,21 @@
             <div class="col-12 mt-3 mb-4 mb-lg-0 text-end">
               <button class="btn rounded-circle shadow fs-5 me-5 admin-notes position-relative">
                 <i class="bi bi-bell-fill"></i>
-                <span class="position-absolute top-8 start-95 translate-middle p-1 bg-danger border border-light rounded-circle">
+                <span
+                  class="position-absolute top-8 start-95 translate-middle p-1 bg-danger border border-light rounded-circle"
+                >
                   <span class="visually-hidden">New alerts</span>
                 </span>
               </button>
-              <img src="https://randomuser.me/api/portraits/women/12.jpg" class="admin-user rounded-circle" alt="" srcset="" />
+              <img
+                src="https://randomuser.me/api/portraits/women/12.jpg"
+                class="admin-user rounded-circle me-3"
+                alt=""
+                srcset=""
+              />
+              <button class="btn fs-2" @click.prevent="signOut">
+                <i class="bi bi-box-arrow-right"></i>
+              </button>
             </div>
             <div class="col-12 admin-content">
               <router-view></router-view>
@@ -76,14 +83,13 @@ export default {
     const store = useStore();
     const router = useRouter();
     const cookieReg = /(?:(?:^|.*;\s*)toyStoreToken\s*=\s*([^;]*).*$)|^.*$/;
-    const myAdminCookieToken = document.cookie.replace(cookieReg, '$1');
-    if (myAdminCookieToken) {
-      store.commit('getToken', myAdminCookieToken);
+
+    if (document.cookie.replace(cookieReg, '$1')) {
       store.dispatch('getAdminProducts'); // 取得porducts
       store.dispatch('getAdminOrders'); // 取得orders
       store.dispatch('getAdminCoupons'); // 取得coupons
       store.dispatch('getAdminImages'); // 取得photos
-    } else if (!myAdminCookieToken) {
+    } else {
       router.push('/');
     }
   },

@@ -1,7 +1,5 @@
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'production'
-    ? '/toystore/'
-    : '/',
+  publicPath: process.env.NODE_ENV === 'production' ? '/toystore/' : '/',
   devServer: {
     headers: {
       'Access-Control-Allow-Origin': '*',

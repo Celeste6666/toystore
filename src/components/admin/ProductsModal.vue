@@ -1,23 +1,50 @@
 <template>
-  <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+  <div
+    class="modal fade"
+    id="productModal"
+    tabindex="-1"
+    aria-labelledby="productModalLabel"
+    aria-hidden="true"
+  >
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-body">
           <div class="container-fluid d-flex flex-column">
-            <img :src="currentEditProduct.imageUrl[0]" class="align-self-center border border-3 p-2 rounded-circle new-product-img" alt="" loading="lazy" />
+            <img
+              :src="currentEditProduct.imageUrl[0]"
+              class="align-self-center border border-3 p-2 rounded-circle new-product-img"
+              alt=""
+              loading="lazy"
+            />
             <div class="mb-3 w-50 mx-auto text-center">
-              <input class="form-control form-control-sm mt-4 file-upload" type="file" name="file" @change="getImage" />
+              <input
+                class="form-control form-control-sm mt-4 file-upload"
+                type="file"
+                name="file"
+                @change="getImage"
+              />
               <small>請上傳正確圖片</small>
             </div>
             <form class="row g-3 needs-validation mt-4" novalidate>
               <div class="col-md-6">
                 <label for="product-name" class="form-label fw-bolder">玩具名</label>
-                <input type="text" class="form-control" id="product-name" v-model="currentEditProduct.title" required />
+                <input
+                  type="text"
+                  class="form-control"
+                  id="product-name"
+                  v-model="currentEditProduct.title"
+                  required
+                />
                 <div class="valid-feedback">Looks good!</div>
               </div>
               <div class="col-md-6">
                 <label for="product-type" class="form-label fw-bolder">玩具類型</label>
-                <select class="form-select rounded-0" id="product-type" required v-model="currentEditProduct.category">
+                <select
+                  class="form-select rounded-0"
+                  id="product-type"
+                  required
+                  v-model="currentEditProduct.category"
+                >
                   <option selected disabled value="">請選擇正確類型</option>
                   <option value="絨毛玩具">絨毛玩具</option>
                   <option value="木製玩具">木製玩具</option>
@@ -27,55 +54,133 @@
               </div>
               <div class="col-12">
                 <label for="product-description" class="form-label fw-bolder">玩具簡述</label>
-                <input v-model="currentEditProduct.content" type="text" class="form-control" id="product-description" required />
+                <input
+                  v-model="currentEditProduct.content"
+                  type="text"
+                  class="form-control"
+                  id="product-description"
+                  required
+                />
                 <div class="valid-feedback">Looks good!</div>
               </div>
               <div class="col-md-4">
                 <label for="product-origin-price" class="form-label fw-bolder">原價</label>
-                <input type="text" class="form-control" id="product-origin-price" required v-model.number="currentEditProduct.origin_price" />
+                <input
+                  type="text"
+                  class="form-control"
+                  id="product-origin-price"
+                  required
+                  v-model.number="currentEditProduct.origin_price"
+                />
                 <div class="invalid-feedback">請給予正確價格</div>
               </div>
               <div class="col-md-4">
                 <label for="product-now-price" class="form-label fw-bolder">售價</label>
-                <input type="text" class="form-control" id="product-now-price" v-model.number="currentEditProduct.price" required />
+                <input
+                  type="text"
+                  class="form-control"
+                  id="product-now-price"
+                  v-model.number="currentEditProduct.price"
+                  required
+                />
                 <div class="invalid-feedback">請給予正確價格</div>
               </div>
               <div class="col-md-4">
                 <label for="product-now-price" class="form-label fw-bolder">目前數量</label>
-                <input type="text" class="form-control" id="product-now-price" required v-model.number="currentEditProduct.options.quantity" />
+                <input
+                  type="text"
+                  class="form-control"
+                  id="product-now-price"
+                  required
+                  v-model.number="currentEditProduct.options.quantity"
+                />
                 <div class="invalid-feedback">目前數量</div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <label for="product-length" class="form-label fw-bolder">商品長</label>
-                <input type="text" class="form-control" id="product-length" required v-model.number="currentEditProduct.options.length" />
+                <input
+                  type="text"
+                  class="form-control"
+                  id="product-length"
+                  required
+                  v-model.number="currentEditProduct.options.length"
+                />
                 <div class="invalid-feedback">請輸入正確長度</div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <label for="product-width" class="form-label fw-bolder">商品寬</label>
-                <input type="text" class="form-control" id="product-width" required v-model.number="currentEditProduct.options.width" />
+                <input
+                  type="text"
+                  class="form-control"
+                  id="product-width"
+                  required
+                  v-model.number="currentEditProduct.options.width"
+                />
                 <div class="invalid-feedback">請輸入正確寬度</div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <label for="product-height" class="form-label fw-bolder">商品高</label>
-                <input type="text" class="form-control" id="product-height" required v-model.number="currentEditProduct.options.height" />
+                <input
+                  type="text"
+                  class="form-control"
+                  id="product-height"
+                  required
+                  v-model.number="currentEditProduct.options.height"
+                />
                 <div class="invalid-feedback">請輸入正確高度</div>
+              </div>
+              <div class="col-md-3">
+                <label for="product-height" class="form-label fw-bolder">商品重</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="product-height"
+                  required
+                  v-model.number="currentEditProduct.options.weight"
+                />
+                <div class="invalid-feedback">請輸入正確重量</div>
               </div>
               <div class="col-12">
                 <div class="mb-3">
-                  <label for="exampleFormControlTextarea1" class="form-label fw-bolder">商品詳述</label>
-                  <textarea v-model="currentEditProduct.description" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                  <label for="exampleFormControlTextarea1" class="form-label fw-bolder"
+                    >商品詳述</label
+                  >
+                  <textarea
+                    v-model="currentEditProduct.description"
+                    class="form-control"
+                    id="exampleFormControlTextarea1"
+                    rows="3"
+                  ></textarea>
                 </div>
               </div>
               <div class="col-12 form-check">
                 <label class="form-check-label text-danger">上架</label>
-                <input class="form-check-input border-danger text-danger" type="checkbox" v-model="currentEditProduct.enabled" />
+                <input
+                  class="form-check-input border-danger text-danger"
+                  type="checkbox"
+                  v-model="currentEditProduct.enabled"
+                />
               </div>
             </form>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary rounded-0" @click.prevent="deleteCurrentEditProduct" data-bs-dismiss="modal">關閉</button>
-          <button type="submit" class="btn btn-info rounded-0" data-bs-dismiss="modal" @click.prevent="addProduct">儲存</button>
+          <button
+            type="button"
+            class="btn btn-secondary rounded-0"
+            @click.prevent="deleteCurrentEditProduct"
+            data-bs-dismiss="modal"
+          >
+            關閉
+          </button>
+          <button
+            type="submit"
+            class="btn btn-info rounded-0"
+            data-bs-dismiss="modal"
+            @click.prevent="addProduct"
+          >
+            儲存
+          </button>
         </div>
       </div>
     </div>
@@ -100,7 +205,9 @@ export default {
       category: '',
       content: '',
       description: '',
-      imageUrl: ['https://hexschool-api.s3.amazonaws.com/custom/4W34OfrukfyJFJNRaBAcmtpN44I4tkIwoWpLpvlP9l1l6koX0hKGLPZ8Ju4L0Appy9zHT0Nlapka6JGdwPYrtDvWM3k2NsXaaU1ilSWDU1C3kKEKpGnKX0feZSKzmFny.jpg'],
+      imageUrl: [
+        'https://hexschool-api.s3.amazonaws.com/custom/4W34OfrukfyJFJNRaBAcmtpN44I4tkIwoWpLpvlP9l1l6koX0hKGLPZ8Ju4L0Appy9zHT0Nlapka6JGdwPYrtDvWM3k2NsXaaU1ilSWDU1C3kKEKpGnKX0feZSKzmFny.jpg',
+      ],
       enabled: true,
       origin_price: 0,
       price: 0,
@@ -109,6 +216,7 @@ export default {
         width: 0,
         height: 0,
         length: 0,
+        weight: 0,
       },
     });
 
@@ -139,6 +247,7 @@ export default {
           width: 0,
           height: 0,
           length: 0,
+          weight: 0,
         },
       });
       changeKeys(product);

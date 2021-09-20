@@ -8,43 +8,83 @@
       </ol>
     </nav>
     <div class="d-flex justify-content-between align-items-center catalog-header my-5">
-      <div class="h1">所有玩具</div>
+      <div class="h1">{{ currentCategory }}</div>
       <div class="d-flex justify-content-between align-items-center">
-        <button type="button" class="btn btn-sm btn-success rounded-pill px-3 py-1">所有玩具</button>
-        <button type="button" class="btn btn-sm rounded-pill px-3 py-1">絨毛玩具</button>
-        <button type="button" class="btn btn-sm rounded-pill px-3 py-1">木製玩具</button>
-        <button type="button" class="btn btn-sm rounded-pill px-3 py-1">樂高玩具</button>
+        <button
+          type="button"
+          class="btn btn-sm rounded-pill px-3 py-1"
+          :class="[currentCategory === '所有玩具' ? 'btn-success' : '']"
+          @click.prevent="changeCategory('所有玩具')"
+        >
+          所有玩具
+        </button>
+        <button
+          type="button"
+          v-for="cate of categories"
+          :key="cate"
+          @click.prevent="changeCategory(cate)"
+          class="btn btn-sm rounded-pill px-3 py-1"
+          :class="[currentCategory === cate ? 'btn-success' : '']"
+        >
+          {{ cate }}
+        </button>
       </div>
     </div>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mt-1">
-      <div class="col">
-        <div class="card h-100 py-3 d-flex flex-column align-items-center">
-          <img src="@/assets/fronted/stuffed01.png" class="card-img-top" alt="" />
-          <div class="card-body pt-5">
-            <h6 class="card-title text-center">Teddy Bear</h6>
-            <router-link to="/catalog" class="btn btn-success btn-sm rounded-pill px-3"> $ 200 NT </router-link>
+      <div class="col" v-for="product of products" :key="products.id">
+        <router-link
+          :to="{ name: 'Product', params: { id: product.id } }"
+          class="text-decoration-none text-dark"
+        >
+          <div class="card h-100 py-3 d-flex flex-column align-items-center">
+            <img :src="product.imageUrl[0]" class="card-img-top h-50" alt="" />
+            <div class="card-body pt-5">
+              <h6 class="card-title text-center">{{ product.title }}</h6>
+              <span class="btn btn-success btn-sm rounded-pill px-3">
+                NT $ {{ product.price }}
+              </span>
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card h-100 py-3 d-flex flex-column align-items-center">
-          <img src="@/assets/fronted/stuffed02.png" class="card-img-top" alt="" />
-          <div class="card-body pt-5">
-            <h6 class="card-title text-center">Cute Dog</h6>
-            <router-link to="/catalog" class="btn btn-success btn-sm rounded-pill px-3"> $ 200 NT </router-link>
-          </div>
-        </div>
+        </router-link>
       </div>
     </div>
-    <Pagination />
+    <Pagination :current-page-function="currentPageFunction" :current-category="currentCategory" />
   </article>
 </template>
 <script>
+import { ref, computed } from 'vue';
+import { useStore } from 'vuex';
 import Pagination from '@/components/general/Pagination.vue';
 
 export default {
   name: 'Catalog',
   components: { Pagination },
+  setup() {
+    const store = useStore();
+
+    const currentPageFunction = ref('getClientCurrentProducts');
+    const currentCategory = ref('所有玩具');
+
+    const categories = computed(() => store.state.allCategory);
+    const products = computed(() => store.state.currentPageData);
+
+    function changeCategory(cate) {
+      if (cate === '所有玩具') {
+        currentPageFunction.value = 'getClientCurrentProducts';
+      } else {
+        currentPageFunction.value = 'filterClientCurrentProducts';
+      }
+      currentCategory.value = cate;
+    }
+
+    return {
+      currentPageFunction,
+      currentCategory,
+      changeCategory,
+      categories,
+      products,
+    };
+  },
 };
 </script>
 <style lang="scss" scoped>

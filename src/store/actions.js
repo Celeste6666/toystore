@@ -1,9 +1,53 @@
 export default {
   // client
+  // 取得所有產品
   async getClientProducts({ getters, commit }) {
-    const products = await fetch(`${getters.client}/products`);
-    const clientProducts = await products.json();
-    commit('getClientProducts', clientProducts);
+    const res = await fetch(`${getters.client}/products`, {
+      method: 'GET',
+      headers: getters.requestHeaders,
+    });
+    const products = await res.json();
+    commit('getProductsList', products.data);
+  },
+  // 取得指定頁面產品
+  async getClientCurrentProducts({ getters, commit }, page = 1) {
+    const res = await fetch(`${getters.client}/products?page=${page}&paged=12`, {
+      method: 'GET',
+      headers: getters.requestHeaders,
+    });
+    const CurrentProducts = await res.json();
+    commit('getCurrentPage', CurrentProducts);
+  },
+  // 取得產品資料
+  async getProduct({ getters, commit }, productId) {
+    const res = await fetch(`${getters.client}/product/${productId}`);
+    const product = await res.json();
+    commit('getProduct', product.data);
+  },
+  // 取得指定類別頁面產品
+  async filterClientCurrentProducts({ getters, commit }, payload) {
+    const res = await fetch(`${getters.client}/products?page=${payload.page}&orderBy=created_at&sort=desc`, {
+      method: 'GET',
+      headers: getters.requestHeaders,
+    });
+    const CurrentProducts = await res.json();
+
+    CurrentProducts.data = CurrentProducts.data.filter((product) => product.category === payload.category);
+    // 自動分頁
+    CurrentProducts.meta.pagination = {
+      total: CurrentProducts.data.length,
+      per_page: 12,
+      current_page: payload.page,
+    };
+
+    const { total, current_page: currentPage, per_page: perPage } = CurrentProducts.meta.pagination;
+
+    CurrentProducts.meta.pagination.total_pages = Math.ceil(total / perPage);
+
+    CurrentProducts.data = CurrentProducts.data.slice((currentPage - 1) * perPage, currentPage * perPage);
+
+    CurrentProducts.meta.pagination.count = CurrentProducts.data.length;
+    commit('getCurrentPage', CurrentProducts);
   },
   async login({ state }, payload) {
     const admin = await fetch(`${state.api.baseAPI}/auth/login`, {

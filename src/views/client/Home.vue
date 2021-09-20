@@ -2,7 +2,7 @@
   <article class="home">
     <Banner />
     <div class="container-lg">
-      <Toys title="毛絨玩具" />
+      <Toys title="絨毛玩具" />
       <Toys title="木製玩具" />
       <Toys title="樂高玩具" />
     </div>

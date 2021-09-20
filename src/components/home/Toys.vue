@@ -1,7 +1,8 @@
 <template>
   <section class="toys pt-5">
     <div class="d-flex justify-content-between align-items-center toys-header">
-      <div class="h1">{{ title }}</div>
+      <div class="h1" v-if="$route.path == '/'">{{ title }}</div>
+      <div class="h1" v-if="$route.name == 'Product'">你可能會喜歡</div>
       <router-link to="/catalog" class="btn">
         <p class="fs-6 border-bottom border-2">
           所有商品
@@ -11,37 +12,40 @@
     </div>
     <div class="toys-items py-5">
       <div class="row row-cols-1 row-cols-md-4 g-4 mt-1">
-        <div class="col">
-          <div class="card h-100 py-5 d-flex flex-column align-items-center">
-            <img src="../../assets/fronted/stuffed01.png" class="card-img-top" alt="" />
+        <div class="col" v-for="toy of toys" :key="toy.id">
+          <router-link
+            :to="{ name: 'Product', params: { id: toy.id } }"
+            class="card h-100 py-5 d-flex flex-column align-items-center text-dark text-decoration-none"
+          >
+            <img :src="toy.imageUrl[0]" class="card-img-top h-50" alt="" />
             <div class="card-body pt-5">
-              <h6 class="card-title text-center">Teddy Bear</h6>
-              <router-link to="/catalog" class="btn btn-success btn-sm rounded-pill px-3">
-                $ 200 NT
-              </router-link>
+              <h5 class="card-title text-center">{{ toy.title }}</h5>
+              <p class="btn btn-success btn-sm rounded-pill px-3">NT $ {{ toy.price }}</p>
             </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100 py-5 d-flex flex-column align-items-center">
-            <img src="../../assets/fronted/stuffed02.png" class="card-img-top" alt="" />
-            <div class="card-body pt-5">
-              <h6 class="card-title text-center">Cute Dog</h6>
-              <router-link to="/catalog" class="btn btn-success btn-sm rounded-pill px-3">
-                $ 200 NT
-              </router-link>
-            </div>
-          </div>
+          </router-link>
         </div>
       </div>
     </div>
   </section>
 </template>
 <script>
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+
 export default {
   name: 'Toys',
   props: {
     title: String,
+    id: '',
+  },
+  setup(props) {
+    const store = useStore();
+
+    const toys = computed(() => store.state.client.productsList[props.title].slice(0, 4));
+
+    return {
+      toys,
+    };
   },
 };
 </script>
@@ -57,13 +61,7 @@ export default {
       left: 0;
       width: 100%;
       height: 3px;
-      background: linear-gradient(
-        to right,
-        $success 0%,
-        $success 12%,
-        #e5e5e5 12%,
-        #e5e5e5 100%
-      );
+      background: linear-gradient(to right, $success 0%, $success 12%, #e5e5e5 12%, #e5e5e5 100%);
     }
     & i {
       position: relative;
