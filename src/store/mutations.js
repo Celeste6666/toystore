@@ -1,4 +1,7 @@
 export default {
+  changeIsLoading(state) {
+    state.isLoading = !state.isLoading;
+  },
   // client
   // 取得所有產品後分類
   getProductsList(state, products) {
@@ -9,6 +12,10 @@ export default {
   // 取得產品資料
   getProduct(state, productInfo) {
     state.client.product = productInfo;
+  },
+  // 取得購物車資料
+  getCartsList(state, payload) {
+    state.client.cartsList = payload;
   },
   // 改變註冊或登入頁面
   changeLoginTab(state) {
@@ -31,6 +38,20 @@ export default {
   // 帶入所有 orders
   getAdminoOders(state, payload) {
     state.admin.ordersList = payload;
+    state.admin.ordersList.forEach((order) => {
+      if (order.coupon) {
+        const orderItem = order;
+        const discountList = order.products.filter(
+          (item) => item.product.category === order.coupon.title,
+        );
+        let discountTotal = 0;
+        discountList.forEach((item) => {
+          discountTotal += item.product.price * item.quantity;
+        });
+        orderItem.amount =
+          discountTotal - Math.round(discountTotal * (1 - order.coupon.percent / 100));
+      }
+    });
   },
   // 帶入所有coupons
   getAdminCoupons(state, payload) {

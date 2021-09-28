@@ -53,7 +53,9 @@
                 <div class="invalid-feedback">請選擇正確類型</div>
               </div>
               <div class="col-12">
-                <label for="product-description" class="form-label fw-bolder">玩具簡述</label>
+                <label for="product-description" class="form-label fw-bolder"
+                  >玩具簡述</label
+                >
                 <input
                   v-model="currentEditProduct.content"
                   type="text"
@@ -64,7 +66,9 @@
                 <div class="valid-feedback">Looks good!</div>
               </div>
               <div class="col-md-4">
-                <label for="product-origin-price" class="form-label fw-bolder">原價</label>
+                <label for="product-origin-price" class="form-label fw-bolder"
+                  >原價</label
+                >
                 <input
                   type="text"
                   class="form-control"
@@ -86,7 +90,9 @@
                 <div class="invalid-feedback">請給予正確價格</div>
               </div>
               <div class="col-md-4">
-                <label for="product-now-price" class="form-label fw-bolder">目前數量</label>
+                <label for="product-now-price" class="form-label fw-bolder"
+                  >目前數量</label
+                >
                 <input
                   type="text"
                   class="form-control"
@@ -187,7 +193,7 @@
   </div>
 </template>
 <script>
-import { reactive, toRefs, watchEffect } from 'vue';
+import { reactive, toRefs, watch } from 'vue';
 import { useStore } from 'vuex';
 
 export default {
@@ -253,11 +259,12 @@ export default {
       changeKeys(product);
     }
 
-    watchEffect(async () => {
+    watch(productId, async () => {
       if (productId.value === 'add') {
         deleteCurrentEditProduct();
       } else {
         const product = await store.dispatch('getAdminSingleProduct', productId.value);
+        store.commit('changeIsLoading');
         changeKeys(product.data);
       }
     });
@@ -270,12 +277,16 @@ export default {
         // 新增產品
         // 儲存後，先將圖片上傳到資料庫，
         // 之後取得資料庫裡的圖片網址再帶入 currentEditProduct.imageUrl內
+        store.commit('changeIsLoading');
         const formData = new FormData();
         formData.append('file', document.querySelector('.file-upload').files[0]);
         const imgResponse = await store.dispatch('addImage', formData);
         currentEditProduct.imageUrl[0] = imgResponse.data.path;
+        document.querySelector('.file-upload').value = '';
+        document.querySelector('.new-product-img').src =
+          'https://hexschool-api.s3.amazonaws.com/custom/4W34OfrukfyJFJNRaBAcmtpN44I4tkIwoWpLpvlP9l1l6koX0hKGLPZ8Ju4L0Appy9zHT0Nlapka6JGdwPYrtDvWM3k2NsXaaU1ilSWDU1C3kKEKpGnKX0feZSKzmFny.jpg';
+        store.commit('changeIsLoading');
         store.dispatch('addAdminProduct', currentEditProduct);
-        store.dispatch('getAdminCurrentProducts');
       }
       deleteCurrentEditProduct();
     }

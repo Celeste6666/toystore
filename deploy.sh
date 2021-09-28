@@ -14,7 +14,7 @@ set -e
 
 # git init
 git add -A
-git commit -m '完成購物車頁面及部分驗證功能'
+git commit -m '完成所有頁面及功能'
 
 # 部署到 https://<USERNAME>.github.io
 # git push -f git@github.com:<USERNAME>/<USERNAME>.github.io.git master

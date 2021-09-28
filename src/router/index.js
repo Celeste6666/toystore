@@ -104,7 +104,9 @@ const router = createRouter({
   routes,
   scrollBehavior() {
     // 跳轉頁面時，會自動滾回頂部
-    return { top: 0 };
+    return {
+      top: 0,
+    };
   },
 });
 

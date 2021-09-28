@@ -3,12 +3,24 @@
     <span class="text-secondary my-3 h6">產品列表</span>
     <section>
       <ul class="list-group list-unstyled">
-        <li class="card border-0 shadow-sm my-2" v-for="product of adminProducts" :key="product.id">
+        <li
+          class="card border-0 shadow-sm my-2"
+          v-for="product of adminProducts"
+          :key="product.id"
+        >
           <div class="card-body d-flex align-items-center justify-content-around">
             <img :src="product.imageUrl[0]" alt="" class="product-img" />
             <span class="text-start">
               {{ product.title }}<br />
-              <span class="badge rounded-pill bg-success small product-type">{{ product.category }}</span>
+              <span
+                class="badge rounded-pill bg-success small product-type"
+                :class="{
+                  'bg-success': product.category === '絨毛玩具',
+                  'bg-warning': product.category === '木製玩具',
+                  'bg-info': product.category === '樂高玩具',
+                }"
+                >{{ product.category }}</span
+              >
             </span>
             <span class="text-center">
               NT $ {{ product.origin_price }}<br />
@@ -27,8 +39,18 @@
               <input class="form-check-input" type="checkbox" v-model="product.enabled" />
             </div>
             <div class="product-edit">
-              <button class="btn fs-4" :data-id="product.id" @click.prevent="setProductId" data-bs-toggle="modal" data-bs-target="#productModal">
-                <i class="bi bi-pencil-square me-lg-2" :data-id="product.id" @click.stop="setProductId"></i>
+              <button
+                class="btn fs-4"
+                :data-id="product.id"
+                @click.prevent="setProductId"
+                data-bs-toggle="modal"
+                data-bs-target="#productModal"
+              >
+                <i
+                  class="bi bi-pencil-square me-lg-2"
+                  :data-id="product.id"
+                  @click.stop="setProductId"
+                ></i>
               </button>
               <button class="btn fs-4" :data-id="product.id" @click.prevent="delete">
                 <i class="bi bi-trash" :data-id="product.id" @click.stop="delete"></i>

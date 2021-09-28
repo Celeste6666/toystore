@@ -58,7 +58,9 @@ import Pagination from '@/components/general/Pagination.vue';
 
 export default {
   name: 'Catalog',
-  components: { Pagination },
+  components: {
+    Pagination,
+  },
   setup() {
     const store = useStore();
 

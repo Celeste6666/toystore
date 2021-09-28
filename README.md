@@ -65,10 +65,12 @@ views/admin/Admin.vue-|-Coupons.vue
 
 - Ajax(Axios)
 
-後台
-  - D3.js
+- Email.js
 
-  - Mock.js
+後台
+- chart.js
+
+- Firebase Authentication (但因資料庫不同，所以僅可使用登入功能)
 
 # Credit
 

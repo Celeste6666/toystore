@@ -55,10 +55,20 @@
           </div>
         </div>
       </div>
-      <div class="col-6">
-        <span>Facebook</span>
-        <span>Line</span>
-        <span>Google</span>
+      <div class="col-6 d-flex flex-column justify-content-center align-items-center">
+        <div class="d-grid gap-4 w-100">
+          <button class="btn btn-primary rounded-1 shadow-sm" @click.prevent="FBLogin">
+            <i class="bi bi-facebook me-1"></i>
+            Facebook
+          </button>
+          <button
+            class="btn btn-light text-dark rounded-1 shadow-sm"
+            @click.prevent="FBLogin"
+          >
+            <i class="bi bi-google me-1"></i>
+            Google
+          </button>
+        </div>
       </div>
     </div>
   </div>

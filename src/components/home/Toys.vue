@@ -29,7 +29,7 @@
   </section>
 </template>
 <script>
-import { computed } from 'vue';
+import { toRef, computed } from 'vue';
 import { useStore } from 'vuex';
 
 export default {
@@ -40,8 +40,8 @@ export default {
   },
   setup(props) {
     const store = useStore();
-
-    const toys = computed(() => store.state.client.productsList[props.title].slice(0, 4));
+    const title = toRef(props, 'title');
+    const toys = computed(() => store.state.client.productsList[title.value].slice(0, 4));
 
     return {
       toys,
@@ -61,7 +61,13 @@ export default {
       left: 0;
       width: 100%;
       height: 3px;
-      background: linear-gradient(to right, $success 0%, $success 12%, #e5e5e5 12%, #e5e5e5 100%);
+      background: linear-gradient(
+        to right,
+        $success 0%,
+        $success 12%,
+        #e5e5e5 12%,
+        #e5e5e5 100%
+      );
     }
     & i {
       position: relative;

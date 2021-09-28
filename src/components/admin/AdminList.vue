@@ -20,17 +20,40 @@
         <template v-if="$route.name == 'Coupons'">
           <tr v-for="coupon of coupons" :key="coupon.id">
             <th scope="row">
-              <input class="form-check-input coupon-enabled" type="checkbox" :checked="coupon.enabled" :data-id="coupon.id" @change="editCoupon" />
+              <input
+                class="form-check-input coupon-enabled"
+                type="checkbox"
+                :checked="coupon.enabled"
+                :data-id="coupon.id"
+                @change="editCoupon"
+              />
             </th>
             <td>{{ coupon.code }}</td>
             <td>
-              <span class="badge bg-warning text-white">{{ coupon.title }}</span>
+              <span
+                class="badge text-white"
+                :class="{
+                  'bg-danger': coupon.title === '全部品項',
+                  'bg-success': coupon.title === '絨毛玩具',
+                  'bg-warning': coupon.title === '木製玩具',
+                  'bg-info': coupon.title === '樂高玩具',
+                }"
+                >{{ coupon.title }}</span
+              >
             </td>
             <td>{{ coupon.percent }} %</td>
             <td>{{ coupon.deadline.datetime }}</td>
             <td>
-              <button class="btn fs-4" @click.prevent="couponId = coupon.id" data-bs-toggle="modal" data-bs-target="#AdminModal">
-                <i class="bi bi-pencil-square me-lg-2" @click.prevent="couponId = coupon.id"></i>
+              <button
+                class="btn fs-4"
+                @click.prevent="couponId = coupon.id"
+                data-bs-toggle="modal"
+                data-bs-target="#AdminModal"
+              >
+                <i
+                  class="bi bi-pencil-square me-lg-2"
+                  @click.prevent="couponId = coupon.id"
+                ></i>
               </button>
               <button class="btn fs-4" :data-id="coupon.id" @click.prevent="delete">
                 <i class="bi bi-trash" :data-id="coupon.id" @click.stop="delete"></i>
@@ -65,7 +88,9 @@ import AdminModal from '@/components/admin/AdminModal.vue';
 
 export default {
   name: 'AdminList',
-  components: { AdminModal },
+  components: {
+    AdminModal,
+  },
   props: {
     photos: Object,
     coupons: Object,
@@ -77,7 +102,10 @@ export default {
   },
   methods: {
     async editCoupon(e) {
-      const editDate = { id: e.target.dataset.id, enabled: document.querySelector('.coupon-enabled').checked };
+      const editDate = {
+        id: e.target.dataset.id,
+        enabled: document.querySelector('.coupon-enabled').checked,
+      };
       this.$store.dispatch('editAdminCoupon', editDate);
     },
     async delete(e) {

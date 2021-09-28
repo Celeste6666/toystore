@@ -1,6 +1,8 @@
 <template>
   <div id="client-app">
-    <div class="navbar navbar-expand-lg navbar-light bg-white d-flex flex-column py-0 fixed-top">
+    <div
+      class="navbar navbar-expand-lg navbar-light bg-white d-flex flex-column py-0 fixed-top"
+    >
       <div class="container-fluid bg-danger">
         <div class="container-md d-flex justify-content-between align-items-center">
           <div class="me-auto text-white small">
@@ -23,8 +25,14 @@
             </div>
             <div class="col-8 col-md-10 d-flex flex-row-reverse">
               <div class="w-md-50 text-end">
-                <router-link to="/checkout" class="btn btn-lg">
+                <router-link to="/checkout" class="btn btn-lg position-relative">
                   <i class="bi bi-cart3 fs-4"></i>
+                  <span
+                    class="position-absolute top-0 start-50 badge rounded-pill bg-success"
+                  >
+                    {{ cartsLength }}
+                    <span class="visually-hidden">unread messages</span>
+                  </span>
                 </router-link>
                 <router-link to="/login" class="btn btn-lg">
                   <i class="bi bi-person-fill fs-4"></i>
@@ -76,6 +84,7 @@
 
 <script>
 import { useStore } from 'vuex';
+import { computed } from 'vue';
 import Coupon from '@/components/general/Coupon.vue';
 import FollowUs from '@/components/general/FollowUs.vue';
 import Footer from '@/components/general/Footer.vue';
@@ -90,6 +99,13 @@ export default {
   setup() {
     const store = useStore();
     store.dispatch('getClientProducts');
+    store.dispatch('getCartsList');
+
+    const cartsLength = computed(() => store.getters.cartsListLength);
+
+    return {
+      cartsLength,
+    };
   },
 };
 </script>

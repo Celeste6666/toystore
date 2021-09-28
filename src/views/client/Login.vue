@@ -11,7 +11,9 @@ import RegisArea from '@/components/login/RegisArea.vue';
 
 export default {
   name: 'Login',
-  components: { LoginArea, RegisArea },
+  components: {
+    LoginArea, RegisArea,
+  },
   setup() {
     const store = useStore();
     const currentLoginTab = computed(() => store.state.currentLoginTab);

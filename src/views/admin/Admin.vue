@@ -1,7 +1,7 @@
 <template>
   <section class="admin container-fluid">
     <div class="row">
-      <aside class="col-md-3 col-lg-2 shadow position-sticky top-0 start-0">
+      <aside class="col-md-3 col-lg-2 shadow position-md-sticky top-0 start-0">
         <nav class="navbar">
           <div class="container-fluid px-2 flex-column align-items-start">
             <h2 class="my-4 px-3">玩具城</h2>
@@ -46,7 +46,9 @@
         <div class="container-fluid px-2">
           <div class="row px-3">
             <div class="col-12 mt-3 mb-4 mb-lg-0 text-end">
-              <button class="btn rounded-circle shadow fs-5 me-5 admin-notes position-relative">
+              <button
+                class="btn rounded-circle shadow fs-5 me-5 admin-notes position-relative"
+              >
                 <i class="bi bi-bell-fill"></i>
                 <span
                   class="position-absolute top-8 start-95 translate-middle p-1 bg-danger border border-light rounded-circle"
@@ -85,6 +87,7 @@ export default {
     const cookieReg = /(?:(?:^|.*;\s*)toyStoreToken\s*=\s*([^;]*).*$)|^.*$/;
 
     if (document.cookie.replace(cookieReg, '$1')) {
+      store.commit('getToken', document.cookie.replace(cookieReg, '$1'));
       store.dispatch('getAdminProducts'); // 取得porducts
       store.dispatch('getAdminOrders'); // 取得orders
       store.dispatch('getAdminCoupons'); // 取得coupons

@@ -18,7 +18,9 @@ import Pagination from '@/components/general/Pagination.vue';
 
 export default {
   name: 'Coupons',
-  components: { AdminList, AdminModal, Pagination },
+  components: {
+    AdminList, AdminModal, Pagination,
+  },
   setup() {
     const store = useStore();
     const adminImages = computed(() => store.state.currentPageData);

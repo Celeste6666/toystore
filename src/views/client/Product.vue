@@ -23,8 +23,16 @@
               class="form-control border border-2 bg-light rounded-pill px-3 py-2 fs-5 w-25 text-center mb-3"
               v-model.number="orderNum"
             />
-            <button class="btn btn-lg btn-danger px-3 py-2 rounded-pill me-2">加入購物車</button>
-            <button class="btn btn-lg btn-outline-secondary border border-2 px-3 py-2 rounded-pill">
+            <button
+              class="btn btn-lg btn-danger px-3 py-2 rounded-pill me-2"
+              @click.prevent="addToCart"
+            >
+              加入購物車
+            </button>
+            <button
+              class="btn btn-lg btn-outline-secondary border border-2 px-3 py-2 rounded-pill"
+              @click.prevent="buyNow"
+            >
               馬上購買
             </button>
           </div>
@@ -42,7 +50,8 @@
               訂購付款後依照訂單順序現貨商品約3~5個工作天出貨，
               客製化商品約18個工作天出貨，國內地區出貨後2~4天內送達；
               國外地區2~7天送達。(配送時間皆不包含例假日以及國定假日)
-              ANVI部份產品組裝與配件供應鏈來自海外， 由於COVID-19疫情之影響，如過程中遇到班機縮減、
+              ANVI部份產品組裝與配件供應鏈來自海外，
+              由於COVID-19疫情之影響，如過程中遇到班機縮減、
               通關抽檢可能導致商品配送延遲7~14個工作天(含出貨作業時間)，
               若您的訂單有上述之情形影響，我們將會提前以Email通知，
               造成您的不便敬請見諒。請理解後再下單。 (客製化商品下單後即無法退換貨)
@@ -63,19 +72,27 @@
           </div>
           <div class="col-md-4 offset-2">
             <ul class="list-group list-group-flush p-3 rounded border border-3">
-              <li class="list-group-item d-flex justify-content-between align-items-center">
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center"
+              >
                 <div>長</div>
                 <div>{{ product.options.length }} cm</div>
               </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center"
+              >
                 <span>寬</span>
                 <span>{{ product.options.width }} cm</span>
               </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center"
+              >
                 <span>高</span>
                 <span>{{ product.options.height }} cm</span>
               </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center"
+              >
                 <span>重</span>
                 <span>{{ product.options.weight }} g</span>
               </li>
@@ -84,32 +101,72 @@
         </div>
       </div>
     </div>
-    <Toys :title="product.category" :id="product.id" />
+    <Toys :title="product.category" :id="product.id" v-if="product.id" />
   </article>
 </template>
 <script>
-import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
+import { ref, computed, watch } from 'vue';
 import Toys from '@/components/home/Toys.vue';
 
 export default {
   name: 'product',
-  components: { Toys },
+  components: {
+    Toys,
+  },
   setup() {
     const router = useRouter();
     const store = useStore();
 
-    const productId = router.currentRoute.value.params.id;
-    const orderNum = ref(0);
+    // 當在同一個 component 中進行頁面跳轉時, productId 可透過 computed 得知 router 變更
+    // 產品詳細資料頁面轉第二個產品資料頁面，如果不透過 computed 的話，頁面無法重新執行，因為頁面已經執行過 setup
+    // ref(router.currentRoute.value.params.id) 及 純router.currentRoute.value.params.id 都是不可用的
+    const productId = computed(() => router.currentRoute.value.params.id);
+    const orderNum = ref(1);
 
-    store.dispatch('getProduct', productId);
+    // 在第一次進入頁面就執行
+    store.dispatch('getProduct', productId.value);
+
+    // 由 watch 監控 productId，如果變更就重新執行 getProduct
+    watch(productId, () => {
+      if (productId.value && productId.value !== undefined) {
+        store.dispatch('getProduct', productId.value);
+      }
+    });
 
     const product = computed(() => store.state.client.product);
+
+    // 加入購物車
+    async function addToCart() {
+      const productInCart = store.state.client.cartsList.some(
+        (cart) => cart.product.id === productId.value,
+      );
+      if (productInCart) {
+        // 購物車中有相同產品
+        await store.dispatch('EditCart', {
+          product: productId.value,
+          quantity: orderNum.value,
+        });
+      } else {
+        await store.dispatch('addToCart', {
+          product: productId.value,
+          quantity: orderNum.value,
+        });
+      }
+      orderNum.value = 1;
+    }
+
+    async function buyNow() {
+      await addToCart();
+      router.push('/checkout');
+    }
 
     return {
       product,
       orderNum,
+      addToCart,
+      buyNow,
     };
   },
 };
@@ -125,7 +182,13 @@ export default {
     left: 0;
     width: 100%;
     height: 3px;
-    background: linear-gradient(to right, $success 0%, $success 12%, #e5e5e5 12%, #e5e5e5 100%);
+    background: linear-gradient(
+      to right,
+      $success 0%,
+      $success 12%,
+      #e5e5e5 12%,
+      #e5e5e5 100%
+    );
   }
 }
 </style>

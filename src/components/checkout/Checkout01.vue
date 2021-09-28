@@ -1,6 +1,8 @@
 <template>
   <div class="customer-info mb-6">
-    <div class="h2 py-4 border-bottom mb-5 d-flex justify-content-between align-items-end">
+    <div
+      class="h2 py-4 border-bottom mb-5 d-flex justify-content-between align-items-end"
+    >
       <span>購物資訊</span>
       <span class="fs-6 text-danger">* Required</span>
     </div>
@@ -20,11 +22,13 @@
     </Field>
   </div>
   <div class="shipping-info mb-6">
-    <div class="h2 py-4 border-bottom mb-5 d-flex justify-content-between align-items-end">
+    <div
+      class="h2 py-4 border-bottom mb-5 d-flex justify-content-between align-items-end"
+    >
       <span>運送資訊</span>
       <span class="fs-6 text-danger">* Required</span>
     </div>
-    <Form class="row g-4" :validation-schema="schema">
+    <Form class="row g-4">
       <div class="col-12">
         <label for="shippingName" class="form-label"
           >全名
@@ -47,7 +51,11 @@
           <span class="text-danger">*</span>
         </label>
 
-        <Field name="電話號碼" rules="numeric|length:10|required" v-slot="{ field, errorMessage }">
+        <Field
+          name="電話號碼"
+          rules="numeric|length:10|required"
+          v-slot="{ field, errorMessage }"
+        >
           <input
             v-bind="field"
             type="tel"
@@ -86,27 +94,28 @@
     </Form>
   </div>
   <div class="payment-info mb-6">
-    <div class="h2 py-4 border-bottom mb-5 d-flex justify-content-between align-items-end">
+    <div
+      class="h2 py-4 border-bottom mb-5 d-flex justify-content-between align-items-end"
+    >
       <span>付款方式</span>
       <span class="fs-6 text-danger">預設為貨到付款</span>
     </div>
-    <div class="d-md-flex justify-content-between">
+    <div class="d-md-flex flex-column justify-content-between">
       <Field name="payment" rules="required" v-slot="{ field }">
         <input
           v-bind="field"
           type="radio"
           class="btn-check"
-          id="LinePay"
-          value="LinePay"
+          id="ApplePay"
+          value="ApplePay"
           v-model="order.payment"
         />
       </Field>
       <label
-        class="btn btn-success rounded-pill fs-5 px-4 py-2 text-uppercase fw-bold me-2 my-2"
-        for="LinePay"
+        class="btn btn-dark rounded-pill fs-5 px-3 py-2 fw-bold me-2 my-2"
+        for="ApplePay"
       >
-        line
-        <span class="bg-white text-success p-1">pay</span>
+        <img src="@\assets\fronted\ApplyPay.png" alt="" />
       </label>
 
       <Field name="payment" rules="required" v-slot="{ field }">
@@ -114,17 +123,16 @@
           v-bind="field"
           type="radio"
           class="btn-check"
-          id="PiPay"
-          value="PiPay"
+          id="GooglePay"
+          value="GooglePay"
           v-model="order.payment"
         />
       </Field>
       <label
-        class="btn btn-info rounded-pill fs-5 px-4 py-2 text-uppercase fw-bold me-2 my-2"
-        for="PiPay"
+        class="btn btn-light text-secondary rounded-pill fs-5 px-3 py-2 fw-bold me-2 my-2"
+        for="GooglePay"
       >
-        <span class="bg-white text-info p-1 rounded-1">Pi</span>
-        拍錢包
+        <img src="@\assets\fronted\GooglePay.svg" />
       </label>
 
       <Field name="payment" rules="required" v-slot="{ field }">
@@ -132,14 +140,14 @@
           v-bind="field"
           type="radio"
           class="btn-check"
-          id="creditCard"
-          value="creditCard"
+          id="Credit"
+          value="Credit"
           v-model="order.payment"
         />
       </Field>
       <label
-        class="btn btn-warning rounded-pill fs-5 px-4 py-2 text-uppercase fw-bold me-2 my-2"
-        for="creditCard"
+        class="btn btn-warning rounded-pill fs-5 px-3 py-2 fw-bold me-2 my-2"
+        for="Credit"
         >信用卡
       </label>
 
@@ -148,15 +156,15 @@
           v-bind="field"
           type="radio"
           class="btn-check"
-          id="COD"
-          value="COD"
+          id="ATM"
+          value="ATM"
           v-model="order.payment"
         />
       </Field>
       <label
-        class="btn btn-dark rounded-pill fs-5 px-4 py-2 text-uppercase fw-bold me-2 my-2"
-        for="creditCard"
-        >貨到付款
+        class="btn btn-info rounded-pill fs-5 px-3 py-2 text-uppercase fw-bold me-2 my-2"
+        for="ATM"
+        >ATM
       </label>
     </div>
   </div>
@@ -164,16 +172,31 @@
 <script>
 import { computed } from 'vue';
 import { useStore } from 'vuex';
-import { defineRule, Form, Field } from 'vee-validate';
+import { configure, defineRule, Form, Field } from 'vee-validate';
 import AllRules from '@vee-validate/rules';
+import { localize, setLocale } from '@vee-validate/i18n';
+import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json';
 
 Object.keys(AllRules).forEach((rule) => {
   defineRule(rule, AllRules[rule]);
 });
 
+// 製造表單回傳資料的語言
+configure({
+  generateMessage: localize({
+    zhTW,
+  }),
+});
+
+// 將 configure 套用在表單內
+setLocale('zhTW');
+
 export default {
   name: 'Checkout01',
-  components: { Form, Field },
+  components: {
+    Form,
+    Field,
+  },
   setup() {
     const store = useStore();
     const order = computed(() => store.state.client.order);
@@ -184,3 +207,9 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+label > img {
+  height: 32px;
+  object-fit: cover;
+}
+</style>
