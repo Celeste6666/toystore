@@ -1,5 +1,7 @@
 # toystore
 
+GitHub Pages: [https://celeste6666.github.io/toystore/](https://celeste6666.github.io/toystore/)
+
 # 路由及模組規劃
 
 ## 路由
