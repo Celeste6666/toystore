@@ -66,7 +66,9 @@ export default {
       console.log(year);
 
       // 日營收
-      const dayIncomeLabel = Array.from({ length: 31 }, (v, i) => i + 1);
+      const dayIncomeLabel = Array.from({
+        length: 31,
+      }, (v, i) => i + 1);
       const dayIncomeData = dayIncomeLabel.map((date) => store.getters.dayIncome(month, date));
       const dayIncomeChart = new Chart(dayIncome.value, {
         type: 'line',
